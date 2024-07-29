@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Soal</title>
+    <link rel="stylesheet" href="styles_soal.css">
+    <link rel="icon" href="soal.png" type="image/png">
+    <style>
+        #surrender-button {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        #surrender-button:hover {
+            background-color: #c0392b;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #answer-text {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div id="question-container">
+            <p id="question-text"></p>
+            <ul id="options-list"></ul>
+            <p id="answer-text" class="hidden"></p>
+        </div>
+        <button id="reveal-button" onclick="revealAnswer()">Reveal</button>
+        <button id="hide-button" onclick="hideAnswer()" class="hidden">Hide</button>
+        <button id="next-button" onclick="nextQuestion()">Next</button>
+        <button id="surrender-button" onclick="surrender()">Surrender</button>
+    </div>
+    <div id="congratulations" class="hidden">
+        <h1>Dah habis wkwk</h1>
+        <p>Makasih eee, kalo mau soal tambahan request ke pengawas aja </p>
+        <p>😉</p>
+        <button onclick="returnToMenu()">Return to Menu</button>
+    </div>
+    <script>
+
+        // Note:
+        // Type 0 = Pertanyaan yang tidak memiliki pilihan jawaban
+        // type 1 = Pertanyaan yang memiliki pilihan jawaban
+        // type 2 = Pertanyaan dengan jawaban adaptive
+        
+        const questions = [ 
+            {
+                "question": "Complete the sentence with an appropriate modal verb: She ____ (can) play the piano very well.",
+                "options": [],
+                "answer": "can",
+                "type": 0
+            },
+            {
+                "question": "Choose the correct form of the verb: They ____ (to be) coming to the party.",
+                "options": ["is", "am", "are", "were"],
+                "answer": "are",
+                "type": 1
+            },
+            {
+                "question": "Write a sentence using the word 'paradigm'.",
+                "options": [],
+                "answer": "open-ended",
+                "type": 2
+            },
+            {
+                "question": "Which word best completes the sentence? He has a very ____ approach to problem-solving.",
+                "options": ["pragmatic", "dogmatic", "romantic", "problematic"],
+                "answer": "pragmatic",
+                "type": 1
+            },
+            {
+                "question": "Use the word 'nevertheless' in a sentence.",
+                "options": [],
+                "answer": "open-ended",
+                "type": 2
+            },
+            {
+                "question": "Choose the correct form: If I ____ (know) it was your birthday, I would have bought you a present.",
+                "options": ["know", "knew", "known", "knows"],
+                "answer": "knew",
+                "type": 1
+            },
+            {
+                "question": "Complete the sentence with the correct preposition: He is good ____ playing the guitar.",
+                "options": [],
+                "answer": "at",
+                "type": 0
+            },
+            {
+                "question": "Choose the best word to complete the sentence: The new policy will have far-reaching ____ on the economy.",
+                "options": ["effects", "affects", "impacts", "results"],
+                "answer": "effects",
+                "type": 1
+            },
+            {
+                "question": "Explain the difference between 'affect' and 'effect'.",
+                "options": [],
+                "answer": "open-ended",
+                "type": 2
+            },
+            {
+                "question": "Choose the correct word: The committee reached a ____ after several hours of discussion.",
+                "options": ["conclusion", "conclude", "concluded", "conclusive"],
+                "answer": "conclusion",
+                "type": 1
+            },
+            {
+                "question": "Complete the sentence: Despite the rain, they ____ (to go) to the park.",
+                "options": [],
+                "answer": "went",
+                "type": 0
+            },
+            {
+                "question": "Choose the best word: Her performance was ____ (impress).",
+                "options": ["impress", "impressive", "impressed", "impressing"],
+                "answer": "impressive",
+                "type": 1
+            },
+            {
+                "question": "Write a formal email to a professor requesting an extension on an assignment.",
+                "options": [],
+                "answer": "open-ended",
+                "type": 2
+            },
+            {
+                "question": "Choose the correct verb: She ____ (to finish) her homework before going out.",
+                "options": [],
+                "answer": "finished",
+                "type": 0
+            },
+            {
+                "question": "Select the word that best completes the sentence: The scientist's theory was ____ by many of his peers.",
+                "options": ["disproved", "approved", "discovered", "enlightened"],
+                "answer": "disproved",
+                "type": 1
+            },
+            {
+                "question": "Describe a situation where you had to use critical thinking skills.",
+                "options": [],
+                "answer": "open-ended",
+                "type": 2
+            },
+            {
+                "question": "Fill in the blank with the correct tense: By this time next year, she ____ (to graduate) from university.",
+                "options": [],
+                "answer": "will have graduated",
+                "type": 0
+            },
+            {
+                "question": "Which phrase best completes the sentence? The results of the experiment were ____ conclusive.",
+                "options": ["largely", "hardly", "nearly", "entirely"],
+                "answer": "largely",
+                "type": 1
+            },
+            {
+                "question": "Discuss the impact of social media on modern communication.",
+                "options": [],
+                "answer": "open-ended",
+                "type": 2
+            },
+            {
+                "question": "Choose the correct phrasal verb: She ____ (to look) forward to the concert for weeks.",
+                "options": ["looks", "looked", "is looking", "was looking"],
+                "answer": "has been looking",
+                "type": 1
+            },
+            {
+                "question": "Complete the sentence with the correct form of the verb: He ____ (to have) already eaten dinner.",
+                "options": [],
+                "answer": "has",
+                "type": 0
+            },
+            {
+                "question": "Select the word that best completes the sentence: Her actions were ____ (condemn) by the community.",
+                "options": ["condemned", "condemnation", "condemning", "condemn"],
+                "answer": "condemned",
+                "type": 1
+            },
+            {
+                "question": "Provide an example of a situation where effective communication was crucial.",
+                "options": [],
+                "answer": "open-ended",
+                "type": 2
+            },
+            {
+                "question": "Complete the sentence with the appropriate conjunction: He missed the bus, ____ he was late for work.",
+                "options": [],
+                "answer": "so",
+                "type": 0
+            },
+            {
+                "question": "Choose the best word to complete the sentence: The lecture was ____ (inform) and engaging.",
+                "options": ["informative", "inform", "informed", "informing"],
+                "answer": "informative",
+                "type": 1
+            },
+            {
+                "question": "Discuss the pros and cons of working from home.",
+                "options": [],
+                "answer": "open-ended",
+                "type": 2
+            },
+            {
+                "question": "Fill in the blank with the correct tense: She ____ (to study) for her exams all week.",
+                "options": [],
+                "answer": "has been studying",
+                "type": 0
+            },
+            {
+                "question": "Select the word that best completes the sentence: The new policy will ____ (impact) all employees.",
+                "options": ["affect", "effect", "impacted", "impacting"],
+                "answer": "affect",
+                "type": 1
+            },
+            {
+                "question": "Describe a challenging project you have worked on and how you managed it.",
+                "options": [],
+                "answer": "open-ended",
+                "type": 2
+            },
+            {
+                "question": "Complete the sentence with the correct form of the verb: If they ____ (to arrive) earlier, they would have seen the show.",
+                "options": [],
+                "answer": "had arrived",
+                "type": 0
+            },
+            {
+                "question": "Choose the best word to complete the sentence: The conference was highly ____ (benefit) for the attendees.",
+                "options": ["beneficial", "benefit", "benefited", "benefitting"],
+                "answer": "beneficial",
+                "type": 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function shuffleQuestionsAndOptions() {
+            shuffle(questions); // Mengacak urutan soal
+            questions.forEach(question => {
+                if (question.options.length > 0) {
+                    shuffle(question.options); // Mengacak urutan pilihan jawaban jika ada
+                }
+            });
+        }
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('question-text').textContent = question.question;
+            const optionsList = document.getElementById('options-list');
+            optionsList.innerHTML = '';
+            if (question.type === 1) {
+                question.options.forEach(option => {
+                    const li = document.createElement('li');
+                    li.textContent = option;
+                    optionsList.appendChild(li);
+                });
+            }
+            document.getElementById('answer-text').classList.add('hidden');
+            document.getElementById('answer-text').textContent = '';
+            document.getElementById('reveal-button').classList.remove('hidden');
+            if (question.type === 2) {
+                document.getElementById('reveal-button').classList.add('hidden');
+            }
+            document.getElementById('hide-button').classList.add('hidden');
+            document.getElementById('next-button').classList.remove('hidden');
+        }
+
+        function revealAnswer() {
+            const question = questions[currentQuestionIndex];
+            if (question.type === 0 || question.type === 2) {
+                document.getElementById('answer-text').textContent = `Current answer: ${question.answer}`;
+                document.getElementById('answer-text').classList.remove('hidden');
+            } else if (question.type === 1) {
+                const optionsList = document.getElementById('options-list');
+                optionsList.querySelectorAll('li').forEach(li => {
+                    if (li.textContent === question.answer) {
+                        li.style.backgroundColor = '#9CDBA6';
+                        li.style.color = '#468585';
+                    }
+                });
+            }
+            document.getElementById('reveal-button').classList.add('hidden');
+            document.getElementById('hide-button').classList.remove('hidden');
+        }
+
+        function hideAnswer() {
+            const question = questions[currentQuestionIndex];
+            if (question.type === 0 || question.type === 2) {
+                document.getElementById('answer-text').classList.add('hidden');
+                document.getElementById('answer-text').textContent = '';
+            } else if (question.type === 1) {
+                const optionsList = document.getElementById('options-list');
+                optionsList.querySelectorAll('li').forEach(li => {
+                    li.style.backgroundColor = '';
+                    li.style.color = '';
+                });
+            }
+            document.getElementById('reveal-button').classList.remove('hidden');
+            document.getElementById('hide-button').classList.add('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById('quiz-container').classList.add('hidden');
+                document.getElementById('congratulations').classList.remove('hidden');
+            }
+            document.getElementById('reveal-button').classList.remove('hidden');
+            document.getElementById('hide-button').classList.add('hidden');
+        }
+
+        function surrender() {
+            if (confirm("Yakin surend dex 😉?")) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function returnToMenu() {
+            window.location.href = 'index.html'; // Sesuaikan dengan URL halaman menu utama
+        }
+
+        window.onload = () => {
+            shuffleQuestionsAndOptions();
+            loadQuestion();
+        };
+    </script>
+</body>
+</html>

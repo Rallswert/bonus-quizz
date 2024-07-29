@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Building Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="main.png" type="image/png">
+</head>
+<body>
+    <div id="main-menu">
+        <h1>Story Building Game</h1>
+        <button id="start-button">Start</button>
+    </div>
+
+    <div id="notification-container" class="hidden">
+        <h2>Form groups of 4-5 people and answer the following questions.</h2>
+        <p><span style="color: grey;">Note: Press F11 on your keyboard to enter full screen mode, press F11 again to exit</span></p>
+        <button id="next-button">Next</button>
+    </div>
+
+    <div class="rating">
+        <input type="radio" id="star-1" name="star-radio" value="star-1">
+        <label for="star-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path pathLength="360" d="M12 2c-.43 0-.83.28-.98.68L8.9 9H2c-.43 0-.83.28-.98.68-.14.4.02.85.36 1.1l5.58 4.07-2.12 6.5c-.13.42.01.88.35 1.14.34.27.81.29 1.17.05L12 18.23l5.64 4.3c.36.24.83.22 1.17-.05.34-.26.48-.72.35-1.14l-2.12-6.5 5.58-4.07c.34-.25.5-.7.36-1.1-.14-.4-.54-.68-.98-.68h-6.9L12.98 2.68C12.83 2.28 12.43 2 12 2z"/>
+            </svg>
+        </label>
+        <input type="radio" id="star-2" name="star-radio" value="star-2">
+        <label for="star-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path pathLength="360" d="M12 2c-.43 0-.83.28-.98.68L8.9 9H2c-.43 0-.83.28-.98.68-.14.4.02.85.36 1.1l5.58 4.07-2.12 6.5c-.13.42.01.88.35 1.14.34.27.81.29 1.17.05L12 18.23l5.64 4.3c.36.24.83.22 1.17-.05.34-.26.48-.72.35-1.14l-2.12-6.5 5.58-4.07c.34-.25.5-.7.36-1.1-.14-.4-.54-.68-.98-.68h-6.9L12.98 2.68C12.83 2.28 12.43 2 12 2z"/>
+            </svg>
+        </label>
+        <input type="radio" id="star-3" name="star-radio" value="star-3">
+        <label for="star-3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path pathLength="360" d="M12 2c-.43 0-.83.28-.98.68L8.9 9H2c-.43 0-.83.28-.98.68-.14.4.02.85.36 1.1l5.58 4.07-2.12 6.5c-.13.42.01.88.35 1.14.34.27.81.29 1.17.05L12 18.23l5.64 4.3c.36.24.83.22 1.17-.05.34-.26.48-.72.35-1.14l-2.12-6.5 5.58-4.07c.34-.25.5-.7.36-1.1-.14-.4-.54-.68-.98-.68h-6.9L12.98 2.68C12.83 2.28 12.43 2 12 2z"/>
+            </svg>
+        </label>
+        <input type="radio" id="star-4" name="star-radio" value="star-4">
+        <label for="star-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path pathLength="360" d="M12 2c-.43 0-.83.28-.98.68L8.9 9H2c-.43 0-.83.28-.98.68-.14.4.02.85.36 1.1l5.58 4.07-2.12 6.5c-.13.42.01.88.35 1.14.34.27.81.29 1.17.05L12 18.23l5.64 4.3c.36.24.83.22 1.17-.05.34-.26.48-.72.35-1.14l-2.12-6.5 5.58-4.07c.34-.25.5-.7.36-1.1-.14-.4-.54-.68-.98-.68h-6.9L12.98 2.68C12.83 2.28 12.43 2 12 2z"/>
+            </svg>
+        </label>
+        <input type="radio" id="star-5" name="star-radio" value="star-5">
+        <label for="star-5">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path pathLength="360" d="M12 2c-.43 0-.83.28-.98.68L8.9 9H2c-.43 0-.83.28-.98.68-.14.4.02.85.36 1.1l5.58 4.07-2.12 6.5c-.13.42.01.88.35 1.14.34.27.81.29 1.17.05L12 18.23l5.64 4.3c.36.24.83.22 1.17-.05.34-.26.48-.72.35-1.14l-2.12-6.5 5.58-4.07c.34-.25.5-.7.36-1.1-.14-.4-.54-.68-.98-.68h-6.9L12.98 2.68C12.83 2.28 12.43 2 12 2z"/>
+            </svg>
+        </label>
+    </div>
+
+    <script>
+        document.getElementById('start-button').addEventListener('click', function() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('notification-container').classList.remove('hidden');
+        });
+
+        document.getElementById('next-button').addEventListener('click', function() {
+            window.location.href = 'soal.html';
+        });
+    </script>
+</body>
+</html>
